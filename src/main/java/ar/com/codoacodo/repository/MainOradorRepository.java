@@ -21,19 +21,19 @@ public class MainOradorRepository {
 		//System.out.println(listado);
 		
 		//repository.delete(11L);
-		//List<Orador> listado=repository.findAll();
-		//System.out.println(listado);
+		List<Orador> listado=repository.findAll();
+		System.out.println(listado);
 		
-		Orador Arnaldo = repository.getById(12L);
+		//Orador Arnaldo = repository.getById(12L);
 		
-		Arnaldo.setApellido("Rasitt");
-		Arnaldo.setNombre("Ariel");
-		Arnaldo.setTema("C++");
+		//Arnaldo.setApellido("Rasitt");
+		//Arnaldo.setNombre("Ariel");
+		//Arnaldo.setTema("C++");
 		
-		repository.update(Arnaldo);
+		//repository.update(Arnaldo);
 		
-		Orador orador = repository.getById(12L);
-		System.out.println(orador);
+		//Orador orador = repository.getById(12L);
+		//System.out.println(orador);
 				
 		
 		
