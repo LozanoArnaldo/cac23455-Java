@@ -23,6 +23,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/api/orador")
 public class NuevoOradorController extends HttpServlet {
 	
+	private OradorRepository repository = new MysqlOradorRepository();
+	
 	@Override
 	protected void doPost(HttpServletRequest request, 
 			HttpServletResponse response) throws ServletException, IOException {
@@ -45,7 +47,7 @@ public class NuevoOradorController extends HttpServlet {
 					oradorRequest.getTema(), 
 					LocalDate.now());
 			
-			OradorRepository repository = new MysqlOradorRepository();
+			
 			
 			repository.save(nuevo);
 			
@@ -59,8 +61,8 @@ public class NuevoOradorController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		OradorRepository repository = new MysqlOradorRepository();
-		List<Orador> listado = repository.findAll();
+		
+		List<Orador> listado = this.repository.findAll();
 		
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -73,4 +75,42 @@ public class NuevoOradorController extends HttpServlet {
 		
 	}
 	
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		
+		OradorRepository repository = new MysqlOradorRepository();
+		
+		repository.delete(Long.parseLong(id));
+		
+		response.setStatus(HttpServletResponse.SC_OK);
+		
+	}
+	@Override
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		
+		String json = request.getReader()
+				.lines()
+				.collect(Collectors.joining(System.lineSeparator()));
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		
+		
+		OradorRequest oradorRequest = mapper.readValue(json, OradorRequest.class);
+		
+		Orador orador =this.repository.getById(Long.parseLong(id));
+		
+		orador.setNombre(oradorRequest.getNombre());
+		orador.setApellido(oradorRequest.getApellido());
+		orador.setMail(oradorRequest.getMail());
+		orador.setTema(oradorRequest.getTema());
+	
+		
+		this.repository.update(orador);
+		
+		response.setStatus(HttpServletResponse.SC_OK);
+	}
 }

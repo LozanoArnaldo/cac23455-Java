@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebFilter(urlPatterns = { "/*" })
 public class CorsFilter implements Filter {
 
-	private List<String> origins = List.of("http://localhost:5500", "http://127.0.0.1:5500","https://lozanoarnaldo.github.io");//spring
+	private List<String> origins = List.of("http://localhost:5500", "http://127.0.0.1:5500", "https://lozanoarnaldo.github.io");
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
